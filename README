@@ -1,8 +1,13 @@
 Trac Theme based on Twitter Bootstrap
 =====================================
 
+This code is under Public License.
+
 This is a quick hack to add bootstrap theme to Trac.
 
-It used the online (CDN) bootstrap js and css files.
+It uses the online (CDN) bootstrap js and css files.
 
 This is far from being complete.
+
+Screenshots:
+http://adi.roiban.ro/articles/2012/2012-05-19-twitter-bootstrap-theme-for-trac.html
