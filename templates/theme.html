@@ -9,9 +9,17 @@ else:
 
 db = perm.env.get_db_cnx()
 cursor = db.cursor()
-cursor.execute("SELECT id, title FROM report ORDER BY %s%s"
-               % ('id', ''))
+cursor.execute(
+  "SELECT id, title FROM report ORDER BY %s" % ('id'))
 all_reports = list(cursor)
+
+sql = (
+  'SELECT name, max(time) AS max_time FROM wiki '
+  'GROUP BY name ORDER BY max_time DESC LIMIT 15'
+  )
+cursor.execute(sql)
+last_wikis = list(cursor)
+
 ?>
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -43,7 +51,7 @@ all_reports = list(cursor)
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="${chrome.logo.link}">${project.name}</a>
+          <a class="brand" href="${req.base_url}">${project.name}</a>
           <div class="btn-group pull-right">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
               <i class="icon-user"></i> ${user_menu_text}
@@ -86,6 +94,10 @@ all_reports = list(cursor)
               <li py:for="report in all_reports">
                 <a href="${href.report(report[0])}">${report[1]}</a>
               </li>
+              <li class="nav-header">Last modified pages</li>
+              <li py:for="wiki_page in last_wikis">
+                <a href="${href.wiki(wiki_page[0])}">${wiki_page[0]}</a>
+              </li>
             </ul>
           </div>
 
@@ -95,8 +107,12 @@ all_reports = list(cursor)
           <xi:include py:if="value_of('resourcepath_template')" href="${resourcepath_template}" />
 
           <div id="ctxtnav" class="btn-group pull-right" py:if="chrome.ctxtnav">
-                <button py:for="i, elm in enumerate(chrome.ctxtnav)"
-                    class="${classes(first_last(i, chrome.ctxtnav))},'btn'">$elm</button>
+                <button py:if="req.environ['PATH_INFO'].startswith('/wiki')" class="btn">
+                  <a href="${req.href(req.path_info)}?action=edit">
+                    Edit page
+                  </a>
+                </button>
+                <button py:for="i, elm in enumerate(chrome.ctxtnav)" class="btn">$elm</button>
           </div>
 
           <div id="warning" py:if="chrome.warnings" class="system-message">
