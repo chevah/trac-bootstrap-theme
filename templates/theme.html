@@ -1,0 +1,138 @@
+<?python
+
+first_metanav = chrome['nav']['metanav'][0]['label']
+if hasattr(first_metanav, 'children'):
+  user_menu_text = first_metanav.children
+else:
+  user_menu_text = first_metanav
+
+
+db = perm.env.get_db_cnx()
+cursor = db.cursor()
+cursor.execute("SELECT id, title FROM report ORDER BY %s%s"
+               % ('id', ''))
+all_reports = list(cursor)
+?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:i18n="http://genshi.edgewall.org/i18n"
+      py:strip="">
+
+  <!--! Add site-specific style sheet -->
+  <head py:match="head" py:attrs="select('@*')">
+    ${select('*|comment()|text()')}
+    <link rel="stylesheet" type="text/css"
+          href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css"
+          href="${href.chrome('site/css/patch.css')}" />
+    <link rel="stylesheet" type="text/css"
+          href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" />
+  </head>
+
+  <py:match path="body" once="true" buffer="false">
+    <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="${chrome.logo.link}">${project.name}</a>
+          <div class="btn-group pull-right">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+              <i class="icon-user"></i> ${user_menu_text}
+              <span class="caret"></span>
+            </a>
+
+            <ul class="dropdown-menu" py:if="chrome.nav['metanav']">
+              <li py:for="idx, item in  enumerate(chrome.nav['metanav'])"
+                  class="${classes(first_last(idx, chrome.nav['metanav']), active=item.active)}">${item.label}</li>
+            </ul>
+          </div>
+
+          <div class="nav-collapse">
+            <ul class="nav" py:if="chrome.nav['mainnav']">
+              <li py:for="idx, item in enumerate(chrome.nav['mainnav'])"
+                  class="${classes(first_last(idx, chrome.nav['mainnav']), active=item.active)}">${item.label}</li>
+            </ul>
+
+            <form id="search" class="navbar-search pull-left" action="${href.search()}" method="get">
+              <py:if test="not defined('trac_error_rendering') and 'SEARCH_VIEW' in perm">
+                <input type="text" class="search-query span2" placeholder="Quick search" id="proj-search" name="q" size="18" accesskey="f" value=""/>
+              </py:if>
+            </form>
+
+
+          </div><!-- /.nav-collapse -->
+        </div>
+      </div><!-- /navbar-inner -->
+    </div>
+
+    <div id="main" class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Actions</li>
+              <li><a href="${href.newticket()}?type=task">Add task</a></li>
+              <li><a href="${href.newticket()}?type=bug">Add bug</a></li>
+              <li class="nav-header">Tickets</li>
+              <li py:for="report in all_reports">
+                <a href="${href.report(report[0])}">${report[1]}</a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+        <div class="span10">
+
+          <xi:include py:if="value_of('resourcepath_template')" href="${resourcepath_template}" />
+
+          <div id="ctxtnav" class="btn-group pull-right" py:if="chrome.ctxtnav">
+                <button py:for="i, elm in enumerate(chrome.ctxtnav)"
+                    class="${classes(first_last(i, chrome.ctxtnav))},'btn'">$elm</button>
+          </div>
+
+          <div id="warning" py:if="chrome.warnings" class="system-message">
+            <py:choose test="len(chrome.warnings)">
+              <strong>Warning:</strong>
+              <py:when test="1">${chrome.warnings[0]}</py:when>
+              <py:otherwise><ul><li py:for="warning in chrome.warnings">$warning</li></ul></py:otherwise>
+            </py:choose>
+          </div>
+          <div id="notice" py:if="chrome.notices" class="system-message">
+            <py:choose test="len(chrome.notices)">
+              <py:when test="1">${chrome.notices[0]}</py:when>
+              <py:otherwise><ul><li py:for="notice in chrome.notices">$notice</li></ul></py:otherwise>
+            </py:choose>
+          </div>
+
+          ${select('*|comment()|text()')}
+        </div>
+      </div>
+    </div>
+
+    <div id="footer" xml:lang="en"><hr/>
+      <a id="tracpowered" href="http://trac.edgewall.org/"><img
+        src="${chrome.htdocs_location}trac_logo_mini.png" height="30"
+        width="107" alt="Trac Powered" class="pull-left" /></a>
+      <p class="pull-left" i18n:msg="version">
+        Powered by <a href="${href.about()}"><strong>Trac ${trac.version}</strong></a><br />
+        By <a href="http://www.edgewall.org/">Edgewall Software</a>.
+      </p>
+      <p class="pull-right">${chrome.footer}</p>
+    </div>
+
+    <!-- Put script at the end for faster loading. -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.3/bootstrap.min.js"></script>
+
+  </body>
+  </py:match>
+</html>

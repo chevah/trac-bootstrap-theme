@@ -1,0 +1,40 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+.nav li {
+    border-right: 0;
+    display: list-item;
+    padding: 0;
+    white-space: nowrap;
+}
+
+table.progress td {
+    background: #FEFFC7;
+}
+
+:link,
+:visited {
+    text-decoration: none;
+    color: #08C;
+    border-bottom: 0px;
+}
+
+#search {
+    clear: none;
+    margin: 0;
+}
+
+form label,
+form input {
+    display: inline-block;
+}
+
+#content {
+    position: inherit;
+}

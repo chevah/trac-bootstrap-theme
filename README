@@ -1,0 +1,8 @@
+Trac Theme based on Twitter Bootstrap
+=====================================
+
+This is a quick hack to add bootstrap theme to Trac.
+
+It used the online (CDN) bootstrap js and css files.
+
+This is far from being complete.
