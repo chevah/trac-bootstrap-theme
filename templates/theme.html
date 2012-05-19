@@ -26,11 +26,11 @@ all_reports = list(cursor)
   <head py:match="head" py:attrs="select('@*')">
     ${select('*|comment()|text()')}
     <link rel="stylesheet" type="text/css"
-          href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" />
+          href="${href.chrome('site/css/bootstrap.css')}" />
     <link rel="stylesheet" type="text/css"
           href="${href.chrome('site/css/patch.css')}" />
     <link rel="stylesheet" type="text/css"
-          href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" />
+          href="${href.chrome('site/css/bootstrap-responsive.css')}" />
   </head>
 
   <py:match path="body" once="true" buffer="false">
@@ -130,8 +130,8 @@ all_reports = list(cursor)
     </div>
 
     <!-- Put script at the end for faster loading. -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.3/bootstrap.min.js"></script>
+    <script src="${href.chrome('site/js/jquery.min.js')}"></script>
+    <script src="${href.chrome('site/js/bootstrap.min.js')}"></script>
 
   </body>
   </py:match>

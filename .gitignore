@@ -1,4 +1,7 @@
 db/
 VERSION
 conf/
+htdocs/css/bootstrap*
+htdocs/img/*
+htdocs/js/*
 htpasswd
