@@ -3,6 +3,10 @@ body {
     padding-bottom: 40px;
 }
 
+textarea {
+  font-family: monospace;
+}
+
 .sidebar-nav {
     padding: 9px 0;
 }
