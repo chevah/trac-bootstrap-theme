@@ -14,6 +14,15 @@ body {
     white-space: nowrap;
 }
 
+.navbar .nav > li > a {
+    color: #FFFFFF;
+}
+
+.navbar .nav .active > a, .navbar .nav .active > a:hover {
+    color: #333333;
+    background-color: #CCCCCC;
+}
+
 table.progress td {
     background: #FEFFC7;
 }
@@ -30,6 +39,10 @@ table.progress td {
     margin: 0;
 }
 
+#search input {
+    font-size: 14px;
+}
+
 form label,
 form input {
     display: inline-block;
@@ -37,4 +50,12 @@ form input {
 
 #content {
     position: inherit;
+}
+
+#edit #text {
+    min-height: 40em;
+}
+
+#topsearch label {
+    display: inherit;
 }
