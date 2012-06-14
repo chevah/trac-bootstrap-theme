@@ -10,7 +10,15 @@ This is far from being complete.
 Screenshots:
 http://adi.roiban.ro/articles/2012/2012-05-19-twitter-bootstrap-theme-for-trac.html
 
-The provided makefile will start the trac testing environment from the
-current folder and will load password from a 'passewd' file.
+The provided makefile can create a Python virtialenv for trac, create a demo
+trac project and start trac.
 
-To get external depedencies, run: make deps
+To create the testing/dev environment::
+
+    make deps
+
+To start Trac for testing:
+
+    make run
+
+Default username and password is: username/password.

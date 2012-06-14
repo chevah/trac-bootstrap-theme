@@ -1,4 +1,5 @@
 <?python
+from genshi.core import QName
 
 first_metanav = chrome['nav']['metanav'][0]['label']
 if hasattr(first_metanav, 'children'):
@@ -6,6 +7,8 @@ if hasattr(first_metanav, 'children'):
 else:
   user_menu_text = first_metanav
 
+for element in chrome['ctxtnav']:
+  element.attrib = element.attrib | [(QName('class'), 'btn')]
 
 db = perm.env.get_db_cnx()
 cursor = db.cursor()
@@ -107,12 +110,10 @@ last_wikis = list(cursor)
           <xi:include py:if="value_of('resourcepath_template')" href="${resourcepath_template}" />
 
           <div id="ctxtnav" class="btn-group pull-right" py:if="chrome.ctxtnav">
-                <button py:if="req.environ['PATH_INFO'].startswith('/wiki')" class="btn">
-                  <a href="${req.href(req.path_info)}?action=edit">
+                  <a py:if="req.environ['PATH_INFO'].startswith('/wiki')" class="btn" href="${req.href(req.path_info)}?action=edit">
                     Edit page
                   </a>
-                </button>
-                <button py:for="i, elm in enumerate(chrome.ctxtnav)" class="btn">$elm</button>
+                <py:for each="i, elm in enumerate(chrome.ctxtnav)" class="btn">$elm</py:for>
           </div>
 
           <div id="warning" py:if="chrome.warnings" class="system-message">
