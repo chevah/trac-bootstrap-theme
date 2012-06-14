@@ -1,4 +1,5 @@
 <?python
+from genshi.builder import tag
 from genshi.core import QName
 
 first_metanav = chrome['nav']['metanav'][0]['label']
@@ -7,8 +8,14 @@ if hasattr(first_metanav, 'children'):
 else:
   user_menu_text = first_metanav
 
+new_ctxtnav = []
 for element in chrome['ctxtnav']:
-  element.attrib = element.attrib | [(QName('class'), 'btn')]
+  if hasattr(element, 'attrib'):
+    element.attrib = element.attrib | [(QName('class'), 'btn')]
+  else:
+    element = tag.button(element,  class_='btn disabled')
+  new_ctxtnav.append(element)
+chrome['ctxtnav'] = new_ctxtnav
 
 db = perm.env.get_db_cnx()
 cursor = db.cursor()
@@ -98,8 +105,21 @@ last_wikis = list(cursor)
                 <a href="${href.report(report[0])}">${report[1]}</a>
               </li>
               <li class="nav-header">Last modified pages</li>
+              <li>
+                <a href="${href.wiki('TitleIndex')}">Title Index</a>
+              </li>
               <li py:for="wiki_page in last_wikis">
-                <a href="${href.wiki(wiki_page[0])}">${wiki_page[0]}</a>
+                <a href="${href.wiki(wiki_page[0])}">
+                    <py:if test="len(wiki_page[0]) &lt; 26">
+                      ${wiki_page[0]}
+                    </py:if>
+                    <py:if test="len(wiki_page[0]) &gt; 25">
+                      <py:with vars="short_name=wiki_page[0][-22:]">
+                        ...${short_name}
+                      </py:with>
+                    </py:if>
+
+                </a>
               </li>
             </ul>
           </div>
