@@ -13,7 +13,7 @@ for element in chrome['ctxtnav']:
   if hasattr(element, 'attrib'):
     element.attrib = element.attrib | [(QName('class'), 'btn')]
   else:
-    element = tag.button(element,  class_='btn disabled')
+    element = tag.a(element,  class_='btn disabled')
   new_ctxtnav.append(element)
 chrome['ctxtnav'] = new_ctxtnav
 
