@@ -2,6 +2,10 @@
 from genshi.builder import tag
 from genshi.core import QName
 
+TRIM_SIZE = 23
+SIDEBAR_SPAN = 2
+CONTENT_SPAN = 12 - SIDEBAR_SPAN
+
 first_metanav = chrome['nav']['metanav'][0]['label']
 if hasattr(first_metanav, 'children'):
   user_menu_text = first_metanav.children
@@ -94,7 +98,7 @@ last_wikis = list(cursor)
 
     <div id="main" class="container-fluid">
       <div class="row-fluid">
-        <div class="span2">
+        <div class="span${SIDEBAR_SPAN}">
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="nav-header">Actions</li>
@@ -110,10 +114,10 @@ last_wikis = list(cursor)
               </li>
               <li py:for="wiki_page in last_wikis">
                 <a href="${href.wiki(wiki_page[0])}">
-                    <py:if test="len(wiki_page[0]) &lt; 26">
+                    <py:if test="len(wiki_page[0]) &lt; TRIM_SIZE + 1">
                       ${wiki_page[0]}
                     </py:if>
-                    <py:if test="len(wiki_page[0]) &gt; 25">
+                    <py:if test="len(wiki_page[0]) &gt; TRIM_SIZE">
                       <py:with vars="short_name=wiki_page[0][-22:]">
                         ...${short_name}
                       </py:with>
@@ -125,7 +129,7 @@ last_wikis = list(cursor)
           </div>
 
         </div>
-        <div class="span10">
+        <div class="span${CONTENT_SPAN}">
 
           <xi:include py:if="value_of('resourcepath_template')" href="${resourcepath_template}" />
 
