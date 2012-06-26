@@ -63,3 +63,7 @@ form input {
 #topsearch label {
     display: inherit;
 }
+
+ul.breadcrumb {
+  float: left;
+}
