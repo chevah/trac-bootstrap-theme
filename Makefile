@@ -15,7 +15,7 @@ run:
 deps: clean
 	virtualenv ${BUILD_FOLDER}
 	@echo "Installing trac will take a while..."
-	${BUILD_FOLDER}/bin/pip install trac
+	${BUILD_FOLDER}/bin/pip install trac==0.12.5
 	${BUILD_FOLDER}/bin/trac-admin ${BUILD_PROJECT} \
 		initenv Test-Project sqlite:db/trac.db
 	htpasswd -b -c  ${BUILD_FOLDER}/htpasswd username password
@@ -35,7 +35,7 @@ deps: clean
     	http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js\
     	-O ${BUILD_PROJECT}/htdocs/js/jquery.min.js
 	wget -q \
-    	http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.3/bootstrap.min.js\
+    	http://twitter.github.com/bootstrap/assets/js/bootstrap.min.js\
     	-O ${BUILD_PROJECT}/htdocs/js/bootstrap.min.js
 
 clean:

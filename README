@@ -1,6 +1,11 @@
 Trac Theme based on Twitter Bootstrap
 =====================================
 
+Works with:
+
+* Trac 0.12.5
+* Bootstrap 2.0.3
+
 This code is under Public License.
 
 This is a quick hack to add bootstrap theme to Trac.
