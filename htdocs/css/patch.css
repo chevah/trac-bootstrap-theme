@@ -15,7 +15,7 @@ textarea {
     border-right: 0;
     display: list-item;
     padding: 0;
-    white-space: nowrap;
+    white-space: normal;
 }
 
 .navbar .nav > li > a {
